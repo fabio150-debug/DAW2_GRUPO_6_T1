@@ -1,6 +1,7 @@
 package exament1.daw2;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,9 +13,12 @@ import java.util.Map;
 public class RecargasController {
 
     private final RestTemplate restTemplate;
+    private final RabbitTemplate rabbitTemplate; // Inyección de RabbitMQ
 
-    public RecargasController(RestTemplate restTemplate) {
+    // Constructor actualizado con RabbitTemplate
+    public RecargasController(RestTemplate restTemplate, RabbitTemplate rabbitTemplate) {
         this.restTemplate = restTemplate;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @PostMapping
@@ -38,14 +42,19 @@ public class RecargasController {
         // Obtener el saldo disponible desde el servicio de Tarjetas
         double saldoDisponible = ((Number) respuestaTarjeta.get("saldo_disponible")).doubleValue();
 
-        // Retornar la solicitud de recarga registrada con los campos solicitados
-        return Map.of(
+        // Estructura de la recarga registrada
+        Map<String, Object> recargaRegistrada = Map.of(
                 "id_recarga", System.currentTimeMillis(), // Generado automáticamente
                 "id_tarjeta", idTarjeta,
                 "saldo_disponible", saldoDisponible,
                 "monto_recarga", montoRecarga,
                 "fecha_recarga", new Date()               // Fecha actual del sistema
         );
+
+        // Envío asíncrono del mensaje a la cola del área de Riesgo
+        rabbitTemplate.convertAndSend("grupo6_Queue", recargaRegistrada);
+
+        return recargaRegistrada;
     }
 
     @SuppressWarnings("unused")
