@@ -31,7 +31,7 @@ public class RecargaService {
             tarjeta = tarjetaClient.buscarPorId(idTarjeta);
         } catch (FeignException.NotFound e) {
             throw new IllegalArgumentException(
-                    "La tarjeta " + idTarjeta + " no existe"
+                    "La tarjeta " + idTarjeta + " no existe."
             );
         }
 

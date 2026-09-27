@@ -16,7 +16,7 @@ public class RecargaConsumer {
     public void consumir(RecargaMessage mensaje) {
 
         System.out.println(
-                "Recarga recibida: " + mensaje.getIdRecarga()
+                "Recarga recibida : " + mensaje.getIdRecarga()
         );
 
         analisisService.analizarRecarga(mensaje);

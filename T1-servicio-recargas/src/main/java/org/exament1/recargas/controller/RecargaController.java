@@ -39,7 +39,7 @@ public class RecargaController {
 
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("error", e.getMessage()));
+                    .body(Map.of("error :", e.getMessage()));
         }
     }
 
