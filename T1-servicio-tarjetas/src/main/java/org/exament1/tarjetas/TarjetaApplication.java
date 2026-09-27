@@ -1,11 +1,11 @@
-package org.exament1.daw2;
+package org.exament1.tarjetas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RiesgoService {
+public class TarjetaApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RiesgoService.class, args);
+        SpringApplication.run(TarjetaApplication.class, args);
     }
 }

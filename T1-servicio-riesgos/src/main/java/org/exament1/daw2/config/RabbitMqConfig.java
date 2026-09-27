@@ -1,17 +1,11 @@
 package org.exament1.daw2.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Collection;
-import java.util.Iterator;
 
 @Configuration
 public class RabbitMqConfig {
@@ -22,12 +16,12 @@ public class RabbitMqConfig {
     @Value("${app.exchange.name}")
     private String exchangeName;
 
-    @Value("app.routing.key")
+    @Value("${app.routing.key}")
     private String routingKey;
 
     @Bean
-    public org.springframework.amqp.core.Queue queue() {
-        return new org.springframework.amqp.core.Queue(queueName, true);
+    public Queue queue() {
+        return new Queue(queueName, true);
     }
 
     @Bean

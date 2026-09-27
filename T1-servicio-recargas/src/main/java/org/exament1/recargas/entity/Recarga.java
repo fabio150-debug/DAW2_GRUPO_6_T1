@@ -1,4 +1,4 @@
-package org.exament1.daw2.entity;
+package org.exament1.recargas.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,18 +9,26 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "analisis")
+@Table(name = "recarga")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Analisis {
+public class Recarga {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_recarga")
     private Long idRecarga;
+
+    @Column(name = "id_tarjeta", nullable = false)
     private String idTarjeta;
+
+    @Column(name = "saldo_disponible", nullable = false)
     private BigDecimal saldoDisponible;
+
+    @Column(name = "monto_recarga", nullable = false)
     private BigDecimal montoRecarga;
+
+    @Column(name = "fecha_recarga", nullable = false)
     private LocalDateTime fechaRecarga;
-    private String situacion;
 }

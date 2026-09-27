@@ -2,11 +2,9 @@ package org.exament1.daw2.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.exament1.daw2.entity.Analisis;
-import org.exament1.daw2.repository.AnalisisRepository;
+import org.exament1.daw2.service.AnalisisService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,10 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnalisisController {
 
-    private final AnalisisRepository analisisRepository;
+    private final AnalisisService analisisService;
 
     @GetMapping
     public ResponseEntity<List<Analisis>> listar() {
-        return ResponseEntity.ok(analisisRepository.findAll());
+        return ResponseEntity.ok(analisisService.listarAnalisis());
     }
 }

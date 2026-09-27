@@ -6,7 +6,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class RecargaDto {
+public class RecargaMessage {
+
     private Long idRecarga;
     private String idTarjeta;
     private BigDecimal saldoDisponible;

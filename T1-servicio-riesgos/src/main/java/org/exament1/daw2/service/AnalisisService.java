@@ -1,26 +1,35 @@
-package org.exament1.daw2.messaging;
+package org.exament1.daw2.service;
 
 import lombok.RequiredArgsConstructor;
-import org.exament1.daw2.dto.RecargaDto;
+import org.exament1.daw2.dto.RecargaMessage;
 import org.exament1.daw2.entity.Analisis;
 import org.exament1.daw2.repository.AnalisisRepository;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class Recarga {
+public class AnalisisService {
 
     private final AnalisisRepository analisisRepository;
 
-    @RabbitListener(queues = "${app.queue.name}")
-    public void recibirRecarga(RecargaDto mensaje) {
-        BigDecimal limite = mensaje.getSaldoDisponible().multiply(BigDecimal.valueOf(0.70));
-        String situacion = mensaje.getMontoRecarga().compareTo(limite) > 0 ? "Observada" : "Aprobada";
+    public void analizarRecarga(RecargaMessage mensaje) {
+
+        BigDecimal limite = mensaje.getSaldoDisponible()
+                .multiply(new BigDecimal("0.70"));
+
+        String situacion;
+
+        if (mensaje.getMontoRecarga().compareTo(limite) <= 0) {
+            situacion = "Aprobada";
+        } else {
+            situacion = "Observada";
+        }
 
         Analisis analisis = new Analisis();
+
         analisis.setIdRecarga(mensaje.getIdRecarga());
         analisis.setIdTarjeta(mensaje.getIdTarjeta());
         analisis.setSaldoDisponible(mensaje.getSaldoDisponible());
@@ -29,5 +38,9 @@ public class Recarga {
         analisis.setSituacion(situacion);
 
         analisisRepository.save(analisis);
+    }
+
+    public List<Analisis> listarAnalisis() {
+        return analisisRepository.findAll();
     }
 }
